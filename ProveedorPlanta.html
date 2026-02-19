@@ -1,0 +1,723 @@
+﻿<div
+  id="wrapper"
+  class="toggled"
+  style="-webkit-box-shadow: rgba(0, 0, 0, 0.9) 1px 9px 44px"
+>
+  <nav
+    class="navbar-default navbar-side animated fadeInLeft"
+    role="navigation"
+    style="
+      width: 353px;
+      box-shadow:
+        inset 0 0px 0 rgba(255, 255, 255, 0.15),
+        0 0px 0px rgba(0, 0, 0, 0.075);
+      border-radius: 0px;
+    "
+  >
+    <div class="sidebar-collapse">
+      <div class="container-fluid" style="background: white">
+        <div
+          class="col-md-12 row"
+          style="margin-bottom: 20px; margin-top: 20px"
+        >
+          <label class="control-label texto-titulos"
+            >Buscar por nit o proveedor:</label
+          >
+
+          <div class="form-group row">
+            <div class="col-md-8">
+              <input
+                ng-show="mostrar==false"
+                type="text"
+                class="form-control"
+                style="width: 146% !important"
+                ng-model="filtroProveedor"
+              />
+              <select
+                ng-show="mostrar==true"
+                id="selectProveedor"
+                class="form-control select2"
+                ng-model="Razon_social"
+                required
+                ng-options="items.Proveedor as items.Razon_social for items in info.proveedores"
+                ng-change="obtenerPlantas(items)"
+                style="width: 275px !important"
+                value=""
+              ></select>
+            </div>
+            <div>
+              <button
+                type="button"
+                class="submit-form-green btn-sm ng-scope"
+                style="
+                  float: left;
+                  text-transform: none;
+                  width: auto;
+                  display: initial;
+                  height: 31px;
+                  padding-top: 1px;
+                  left: 88px;
+                  position: relative;
+                "
+                ng-click="getProveedores(filtroProveedor)"
+              >
+                <i class="fa fa-search" style="font-size: 15px"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <button
+          ng-click="clear()"
+          ng-show=" info.proveedores.length > 0"
+          type="button"
+          class="hvr-glow btn btn-warning"
+          style="left: 106px; position: relative"
+        >
+          <span
+            style="
+              font-family:
+                Century Gothic,
+                CenturyGothic,
+                AppleGothic,
+                sans-serif;
+              font-size: 16px;
+              top: -39px;
+            "
+          >
+            Limpiar
+          </span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div id="page-wrapper" style="margin: 0 0 0 355px; padding: 1px 1px">
+    <div id="page-inner" style="border-left: 1px solid #dddddd">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-back noti-box">
+            <div class="panel panel-default" style="height: 56px">
+              <div class="margin-bottom">
+                <div class="col-sm-8 col-sm-offset-4">
+                  <div class="col-sm-8">
+                    <h4>Proveedores planta</h4>
+                    <i
+                      ng-if="nit.length>0"
+                      class="fa fa-plus-circle fa-2x"
+                      style="
+                        float: right;
+                        right: -183px;
+                        position: relative;
+                        color: #ff8805;
+                        margin-top: -37px;
+                        cursor: pointer;
+                      "
+                      ng-click="Modal('ModalAddPlanta')"
+                      tooltip-trigger="mouseenter"
+                      tooltip-placement="top"
+                      tooltip="Adicionar item "
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body" style="margin-top: 3px">
+              <div>
+                <span ng-if="dataPlantas.length>0"
+                  ><strong>NIT : {{nit}}</strong>
+                </span>
+                <table
+                  class="table table-striped table-bordered table-hover"
+                  ng-if="dataPlantas.length>0"
+                  style="margin-top: 20px; width: 100%"
+                  st-table="dataPlantas"
+                >
+                  <thead style="background-color: white !important">
+                    <tr style="text-align: center">
+                      <th width="30%">Id</th>
+                      <th width="60%">Descripción</th>
+
+                      <th width="5%">Activo</th>
+                      <th width="5%"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>
+                        <input
+                          st-search="c_id_proveedor_planta"
+                          class="form-control"
+                          placeholder="..."
+                          type="text"
+                        />
+                      </th>
+                      <th>
+                        <input
+                          st-search="d_proveedor_planta"
+                          class="form-control"
+                          placeholder="..."
+                          type="text"
+                        />
+                      </th>
+                      <th></th>
+                      <th></th>
+
+                      <!--                                         <th colspan="8">
+                                            <input style="font-size: 11px" st-search="" class="form-control"
+                                                placeholder="Búsqueda global..." type="text" />
+                                        </th> -->
+                    </tr>
+
+                    <tr
+                      ng-repeat="item in dataPlantas"
+                      style="background-color: white !important"
+                    >
+                      <td>{{item.c_id_proveedor_planta}}</td>
+                      <td>{{item.d_proveedor_planta}}</td>
+                      <td>
+                        <input
+                          type="checkbox"
+                          ng-model="item.sw_activo"
+                          style="-webkit-transform: scale(1.6)"
+                          disabled
+                        />
+                      </td>
+                      <td>
+                        <i
+                          class="fa fa-pencil-square-o fa-2x"
+                          style="float: right; color: #ff8805; cursor: pointer"
+                          ng-click="ModalUpdate('ModalUpdatePlanta', item)"
+                          tooltip-trigger="mouseenter"
+                          tooltip-placement="top"
+                          tooltip="Editar "
+                        >
+                        </i>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="6" class="text-center">
+                        <div
+                          st-pagination=""
+                          st-items-by-page="20"
+                          st-displayed-pages="20"
+                        ></div>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+            <div class="panel-body" style="margin-top: 3px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+
+<div class="modal fade" id="ModalUpdatePlanta" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          ng-click="cerrarModal();"
+        >
+          &times;
+        </button>
+        <h3 class="modal-title">Editar planta</h3>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid" style="background: white">
+          <form name="formulario_crear_cargo">
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Descripción planta: <sup>*</sup>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  ng-model="descripcion_planta_update"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Cédula comprador: <sup>*</sup>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  ng-model="cedula_comprador_update"
+                  ng-blur="validar_cedula()"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Compañía: <sup>*</sup>
+                </label>
+                <select
+                  class="form-control select2"
+                  id="select_compania_update"
+                  ng-options="opc.c_compania_erp as opc.d_compania for opc in lista_companias"
+                  ng-model="c_compania_erp_update"
+                  ng-change="c_compania_erp = c_compania_erp_update; item.c_compania_erp; obtenerMotivos(); obtenerSucursales(); obtenerMonedas(); obtenerCondicionesPago();"
+                  required="required"
+                ></select>
+              </div>
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Sucursal: <sup>*</sup>
+                </label>
+                <select
+                  class="form-control select2"
+                  id="select_sucursal_update"
+                  ng-options="opc.f201_id_sucursal as opc.f201_descripcion_sucursal for opc in lista_sucursales"
+                  ng-model="id_sucursal_update"
+                  required="required"
+                ></select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Moneda: <sup>*</sup>
+                </label>
+                <select
+                  class="form-control select2"
+                  id="select_moneda_update"
+                  ng-options="opc.f017_id as opc.f017_descripcion for opc in lista_monedas"
+                  ng-model="id_moneda_update"
+                  required="required"
+                ></select>
+              </div>
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Condición de pago: <sup>*</sup>
+                </label>
+                <select
+                  class="form-control select2"
+                  id="select_condicion_pago_update"
+                  ng-options="opc.f208_id as opc.f208_descripcion for opc in lista_condiciones_pago"
+                  ng-model="id_condicion_pago_update"
+                  required="required"
+                ></select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Motivo: <sup>*</sup>
+                </label>
+                <select
+                  class="form-control select2"
+                  id="select_motivo_update"
+                  ng-options="opc.f146_id as opc.f146_descripcion for opc in lista_motivos"
+                  ng-model="id_motivo_update"
+                  required="required"
+                ></select>
+              </div>
+              <div class="col-md-6">
+                <label class="control-label texto-titulos"> Correos: </label>
+                <textarea
+                  placeholder="Por favor ingresar los correos separados por punto y coma(;) "
+                  class="form-control"
+                  ng-model="correos_update"
+                  rows="2"
+                ></textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div
+                class="col-md-4"
+                style="display: flex; align-items: center; gap: 10px"
+              >
+                <label class="control-label texto-titulos" style="margin: 0">
+                  Formato importación:
+                </label>
+                <input
+                  type="checkbox"
+                  ng-model="sw_importacion_update"
+                  style="-webkit-transform: scale(2)"
+                />
+              </div>
+              <div
+                class="col-md-4"
+                style="display: flex; align-items: center; gap: 10px"
+              >
+                <label class="control-label texto-titulos" style="margin: 0">
+                  Moneda local:
+                </label>
+                <input
+                  type="checkbox"
+                  ng-model="sw_moneda_local_update"
+                  style="-webkit-transform: scale(2)"
+                />
+              </div>
+              <div
+                class="col-md-4"
+                style="display: flex; align-items: center; gap: 10px"
+              >
+                <label class="control-label texto-titulos" style="margin: 0">
+                  Tasa local:
+                </label>
+                <input
+                  type="checkbox"
+                  ng-model="sw_tasa_local_update"
+                  style="-webkit-transform: scale(2)"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <div
+                class="col-md-6"
+                style="display: flex; align-items: center; gap: 10px"
+              >
+                <label class="control-label texto-titulos" style="margin: 0">
+                  Activo:
+                </label>
+                <input
+                  type="checkbox"
+                  ng-model="sw_activo_update"
+                  style="-webkit-transform: scale(2)"
+                />
+              </div>
+            </div>
+
+            <div class="form-group row"></div>
+            <div class="align-center" ng-if="action!=editar">
+              <button
+                type="button"
+                class="hvr-glow btn btn-warning"
+                ng-click="update_planta();"
+                aria-label="left Align"
+                style="background: #f68414"
+              >
+                <span
+                  class="glyphicon glyphicon-floppy-disk"
+                  style="
+                    font-size: 17px;
+                    position: relative;
+                    text-align: -webkit-right;
+                    margin-top: 3px;
+                  "
+                  title="Guardar"
+                  aria-hidden="false"
+                >
+                </span>
+                <span
+                  style="
+                    font-family:
+                      Century Gothic,
+                      CenturyGothic,
+                      AppleGothic,
+                      sans-serif;
+                    font-size: 16px;
+                  "
+                >
+                  Guardar
+                </span>
+              </button>
+            </div>
+            <div class="align-center" ng-if="action==editar">
+              <button
+                type="button"
+                class="hvr-glow btn btn-warning"
+                ng-click="actualizar_configuracion_sedes();"
+                aria-label="left Align"
+                style="background: #f68414"
+              >
+                <span
+                  class="glyphicon glyphicon-floppy-disk"
+                  style="
+                    font-size: 17px;
+                    position: relative;
+                    text-align: -webkit-right;
+                    margin-top: 3px;
+                  "
+                  title="Guardar"
+                  aria-hidden="false"
+                >
+                </span>
+                <span
+                  style="
+                    font-family:
+                      Century Gothic,
+                      CenturyGothic,
+                      AppleGothic,
+                      sans-serif;
+                    font-size: 16px;
+                  "
+                >
+                  Guardar
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-default"
+          data-dismiss="modal"
+          ng-click="closeModal();"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ModalAddPlanta" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          ng-click="closeModal();"
+        >
+          &times;
+        </button>
+        <h3 class="modal-title">Adicionar planta</h3>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid" style="background: white">
+          <form name="formulario_crear_cargo">
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Descripción planta: <sup>*</sup>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  ng-model="descripcion_planta"
+                />
+              </div>
+
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Cédula comprador: <sup>*</sup>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  ng-model="cedula_comprador"
+                  ng-blur="validar_cedula()"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Compañía: <sup>*</sup>
+                </label>
+                <select
+                  class="form-control select2"
+                  id="select_compania"
+                  ng-options="opc.c_compania_erp as opc.d_compania for opc in lista_companias"
+                  ng-model="c_compania_erp"
+                  ng-change="obtenerMotivos(); obtenerSucursales();obtenerMonedas();obtenerCondicionesPago();"
+                  required="required"
+                ></select>
+              </div>
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Sucursal: <sup>*</sup>
+                </label>
+                <select
+                  class="form-control select2"
+                  id="select_sucursal"
+                  ng-options="opc.f201_id_sucursal as opc.f201_descripcion_sucursal for opc in lista_sucursales"
+                  ng-model="id_sucursal"
+                  required="required"
+                ></select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Moneda: <sup>*</sup>
+                </label>
+                <select
+                  class="form-control select2"
+                  id="select_moneda"
+                  ng-options="opc.f017_id as opc.f017_descripcion for opc in lista_monedas"
+                  ng-model="id_moneda"
+                  required="required"
+                ></select>
+              </div>
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Condición de pago: <sup>*</sup>
+                </label>
+                <select
+                  class="form-control select2"
+                  id="select_condicion_pago"
+                  ng-options="opc.f208_id as opc.f208_descripcion for opc in lista_condiciones_pago"
+                  ng-model="id_condicion_pago"
+                  required="required"
+                ></select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label class="control-label texto-titulos">
+                  Motivo: <sup>*</sup>
+                </label>
+                <select
+                  class="form-control select2"
+                  id="select_motivo"
+                  ng-options="opc.f146_id as opc.f146_descripcion for opc in lista_motivos"
+                  ng-model="id_motivo"
+                  required="required"
+                ></select>
+              </div>
+              <div class="col-md-6">
+                <label class="control-label texto-titulos"> Correos: </label>
+                <textarea
+                  placeholder="Por favor ingresar los correos separados por punto y coma(;) "
+                  class="form-control"
+                  ng-model="correos"
+                  rows="2"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div
+                class="col-md-4"
+                style="display: flex; align-items: center; gap: 10px"
+              >
+                <label class="control-label texto-titulos" style="margin: 0">
+                  Formato importación:
+                </label>
+                <input
+                  type="checkbox"
+                  ng-model="sw_importacion"
+                  style="-webkit-transform: scale(2)"
+                />
+              </div>
+              <div
+                class="col-md-4"
+                style="display: flex; align-items: center; gap: 10px"
+              >
+                <label class="control-label texto-titulos" style="margin: 0">
+                  Moneda local:
+                </label>
+                <input
+                  type="checkbox"
+                  ng-model="sw_moneda_local"
+                  style="-webkit-transform: scale(2)"
+                />
+              </div>
+              <div
+                class="col-md-4"
+                style="display: flex; align-items: center; gap: 10px"
+              >
+                <label class="control-label texto-titulos" style="margin: 0">
+                  Tasa local:
+                </label>
+                <input
+                  type="checkbox"
+                  ng-model="sw_tasa_local"
+                  style="-webkit-transform: scale(2)"
+                />
+              </div>
+            </div>
+            <div class="align-center" ng-if="action!=editar">
+              <button
+                type="button"
+                class="hvr-glow btn btn-warning"
+                ng-click="insertar_planta();"
+                aria-label="left Align"
+                style="background: #f68414"
+              >
+                <span
+                  class="glyphicon glyphicon-floppy-disk"
+                  style="
+                    font-size: 17px;
+                    position: relative;
+                    text-align: -webkit-right;
+                    margin-top: 3px;
+                  "
+                  title="Guardar"
+                  aria-hidden="false"
+                >
+                </span>
+                <span
+                  style="
+                    font-family:
+                      Century Gothic,
+                      CenturyGothic,
+                      AppleGothic,
+                      sans-serif;
+                    font-size: 16px;
+                  "
+                >
+                  Guardar
+                </span>
+              </button>
+            </div>
+            <div class="align-center" ng-if="action==editar">
+              <button
+                type="button"
+                class="hvr-glow btn btn-warning"
+                ng-click="actualizar_configuracion_sedes();"
+                aria-label="left Align"
+                style="background: #f68414"
+              >
+                <span
+                  class="glyphicon glyphicon-floppy-disk"
+                  style="
+                    font-size: 17px;
+                    position: relative;
+                    text-align: -webkit-right;
+                    margin-top: 3px;
+                  "
+                  title="Guardar"
+                  aria-hidden="false"
+                >
+                </span>
+                <span
+                  style="
+                    font-family:
+                      Century Gothic,
+                      CenturyGothic,
+                      AppleGothic,
+                      sans-serif;
+                    font-size: 16px;
+                  "
+                >
+                  Guardar
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-default"
+          data-dismiss="modal"
+          ng-click="closeModal();"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
