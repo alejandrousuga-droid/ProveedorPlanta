@@ -1,4 +1,4 @@
-﻿<div
+<div
   id="wrapper"
   class="toggled"
   style="-webkit-box-shadow: rgba(0, 0, 0, 0.9) 1px 9px 44px"
@@ -15,7 +15,7 @@
     "
   >
     <div class="sidebar-collapse">
-      <div class="container-fluid" style="background: white">
+      <div class="container-fluid" style="background: white">x
         <div
           class="col-md-12 row"
           style="margin-bottom: 20px; margin-top: 20px"
@@ -337,33 +337,35 @@
             </div>
             <div class="form-group row">
               <div
-                class="col-md-4"
+                class="col-md-3"
                 style="display: flex; align-items: center; gap: 10px"
               >
                 <label class="control-label texto-titulos" style="margin: 0">
-                  Formato importación:
+                  OC nacional:
+                </label>
+                <input
+                  type="checkbox"
+                  ng-model="sw_oc_nacional_update"
+                  ng-change="onChangeOCNacionalUpdate()"
+                  style="-webkit-transform: scale(2)"
+                />
+              </div>
+              <div
+                class="col-md-3"
+                style="display: flex; align-items: center; gap: 10px"
+              >
+                <label class="control-label texto-titulos" style="margin: 0">
+                   Formato importación:
                 </label>
                 <input
                   type="checkbox"
                   ng-model="sw_importacion_update"
+                  ng-change="onChangeImportacionUpdate()"
                   style="-webkit-transform: scale(2)"
                 />
               </div>
               <div
-                class="col-md-4"
-                style="display: flex; align-items: center; gap: 10px"
-              >
-                <label class="control-label texto-titulos" style="margin: 0">
-                  Moneda local:
-                </label>
-                <input
-                  type="checkbox"
-                  ng-model="sw_moneda_local_update"
-                  style="-webkit-transform: scale(2)"
-                />
-              </div>
-              <div
-                class="col-md-4"
+                class="col-md-3"
                 style="display: flex; align-items: center; gap: 10px"
               >
                 <label class="control-label texto-titulos" style="margin: 0">
@@ -372,6 +374,21 @@
                 <input
                   type="checkbox"
                   ng-model="sw_tasa_local_update"
+                  ng-disabled="sw_oc_nacional_update || sw_importacion_update"
+                  style="-webkit-transform: scale(2)"
+                     />
+              </div>
+              <div
+                class="col-md-3"
+                style="display: flex; align-items: center; gap: 10px"
+              >
+                <label class="control-label texto-titulos" style="margin: 0">
+                 Moneda local:
+                </label>
+                <input 
+                  type="checkbox"
+                  ng-model="sw_moneda_local_update"
+                  ng-disabled="sw_oc_nacional_update || sw_importacion_update"
                   style="-webkit-transform: scale(2)"
                 />
               </div>
@@ -525,13 +542,13 @@
                   Compañía: <sup>*</sup>
                 </label>
                 <select
-                  class="form-control select2"
-                  id="select_compania"
-                  ng-options="opc.c_compania_erp as opc.d_compania for opc in lista_companias"
-                  ng-model="c_compania_erp"
-                  ng-change="obtenerMotivos(); obtenerSucursales();obtenerMonedas();obtenerCondicionesPago();"
-                  required="required"
-                ></select>
+                 class="form-control select2"
+                 id="select_compania_update"
+                 ng-options="opc.c_compania_erp as opc.d_compania for opc in lista_companias"
+                 ng-model="c_compania_erp_update"
+                 ng-change="c_compania_erp = c_compania_erp_update; obtenerMotivos(); obtenerSucursales(); obtenerMonedas(); obtenerCondicionesPago();"
+                 required="required"
+              ></select>
               </div>
               <div class="col-md-6">
                 <label class="control-label texto-titulos">
@@ -598,7 +615,20 @@
 
             <div class="form-group row">
               <div
-                class="col-md-4"
+                class="col-md-3"
+                style="display: flex; align-items: center; gap: 10px"
+              >
+                <label class="control-label texto-titulos" style="margin: 0">
+                   OC nacional:
+                </label>
+                <input
+                  type="checkbox"
+                  ng-model="sw_oc_nacional"
+                  style="-webkit-transform: scale(2)"
+                />
+              </div>
+              <div
+                class="col-md-3"
                 style="display: flex; align-items: center; gap: 10px"
               >
                 <label class="control-label texto-titulos" style="margin: 0">
@@ -607,24 +637,12 @@
                 <input
                   type="checkbox"
                   ng-model="sw_importacion"
+                  ng-change="onChangeFormatoImportacion()"               
                   style="-webkit-transform: scale(2)"
                 />
               </div>
               <div
-                class="col-md-4"
-                style="display: flex; align-items: center; gap: 10px"
-              >
-                <label class="control-label texto-titulos" style="margin: 0">
-                  Moneda local:
-                </label>
-                <input
-                  type="checkbox"
-                  ng-model="sw_moneda_local"
-                  style="-webkit-transform: scale(2)"
-                />
-              </div>
-              <div
-                class="col-md-4"
+                class="col-md-3"
                 style="display: flex; align-items: center; gap: 10px"
               >
                 <label class="control-label texto-titulos" style="margin: 0">
@@ -633,6 +651,21 @@
                 <input
                   type="checkbox"
                   ng-model="sw_tasa_local"
+                  ng-disabled="sw_oc_nacional || sw_importacion"
+                  style="-webkit-transform: scale(2)"
+                    />
+              </div>
+              <div
+                class="col-md-3"
+                style="display: flex; align-items: center; gap: 10px"
+              >
+                <label class="control-label texto-titulos" style="margin: 0">
+                  Moneda local:
+                </label>
+                <input
+                  type="checkbox"
+                  ng-model="sw_moneda_local"
+                  ng-disabled="sw_oc_nacional"
                   style="-webkit-transform: scale(2)"
                 />
               </div>
